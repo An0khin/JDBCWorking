@@ -16,12 +16,11 @@ public class App {
 	}
 	
 	public void test() {
-		try {
 			String url = "jdbc:mysql://localhost:3306/sqlisevil";
 			String login = "root";
 			String password = "1234";
-			Connection con = DriverManager.getConnection(url, login, password);
-			try {
+			
+			try(Connection con = DriverManager.getConnection(url, login, password)) {
 				Statement stmt = con.createStatement();
 				ResultSet rs = stmt.executeQuery("SELECT * FROM drinks"); //SQL request
 				while(rs.next()) { //checking exist next row
@@ -30,11 +29,8 @@ public class App {
 				}
 				rs.close();
 				stmt.close();
-			} finally {
-				con.close();
+			} catch(Exception ex) {
+				ex.printStackTrace();
 			}
-		} catch(Exception ex) {
-			ex.printStackTrace();
-		}
 	}
 }
